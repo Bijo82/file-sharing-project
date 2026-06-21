@@ -1,16 +1,9 @@
-from redis import Redis
+import os
+import redis
 
-Redis = Redis(host="localhost", port=6379, decode_responses=True) #without decode reponses it will give output as b'hello'
-
-# r.set("france","paris")
-# r.set("germany","berlin")
-
-# france_cap = r.get("france")
-# germany_cap = r.get("germany")
-
-# print(france_cap)
-# # print(germany_cap)
-
-# r.set("0rt34f","filename:bijo,fileid:1,memory:file")
-
-# print(r.get("0rt34f"))
+Redis = redis.Redis(
+    host=os.getenv("REDIS_HOST"),
+    port=int(os.getenv("REDIS_PORT")),
+    password=os.getenv("REDIS_PASSWORD"),
+    decode_responses=True
+)
