@@ -113,6 +113,34 @@ async def up_file(uploaded_file: Annotated[List[UploadFile],File(...)]):
     # finally:
     #     await uploaded_file.close()
 
+@router.get("/preview")
+async def preview(otp: str):
+
+    if len(otp) != 6 or not otp.isalnum():
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid OTP"
+        )
+
+    if not metadata_service.otp_exists(otp):
+        raise HTTPException(
+            status_code=404,
+            detail="OTP not found"
+        )
+
+    data = metadata_service.get_metadata(otp)
+
+    if data["used"]:
+        raise HTTPException(
+            status_code=400,
+            detail="OTP already used"
+        )
+
+    return {
+        "type": data["type"],
+        "filename": data.get("file_name"),
+        "storage": data["storage"]
+    }
 
 
 @router.get("/download")
