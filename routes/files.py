@@ -77,6 +77,8 @@ async def up_file(uploaded_file: Annotated[List[UploadFile],File(...)]):
     while(metadata_service.otp_exists(otp)):
         otp = otpgenerate()
 
+    print("OTP GENERATED:", otp) #to check whether render is using old or new code
+
     if len(ls)==1:
         metadata={
             "type": "file",
